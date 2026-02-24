@@ -29,4 +29,7 @@ mcp_servers:
   - name: "snow"
     uri: "http://mcp-self-service-agent-snow:8000/mcp"
     require_approval: "never"
+  - name: "migration-utilities"
+    uri: "http://mcp-self-service-agent-migration-utilities.it-self-service-agent.svc.cluster.local:8000/mcp"
+    require_approval: "never"
 knowledge_bases: ["laptop-refresh"]
