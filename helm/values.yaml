@@ -257,6 +257,24 @@ mcp-servers:
         # so we set it directly in the env section
         UVICORN_WORKERS: "4"
 
+    self-service-agent-migration-utilities:
+      enabled: true
+      replicas: 1
+      deploymentMode: deployment  # Use standard Deployment (no Toolhive)
+      image:
+        repository: quay.io/user15/self-service-agent-migration-utilities-mcp
+        tag: "0.0.10-dev"
+      port: 8000
+      targetPort: 8000
+      transport: streamable-http
+      imagePullPolicy: Always
+      env:
+        MCP_TRANSPORT: "streamable-http"
+        # Number of uvicorn worker processes (stateless-http allows multiple workers)
+        # Note: The mcp-servers chart doesn't auto-convert uvicornWorkers field to env var,
+        # so we set it directly in the env section
+        UVICORN_WORKERS: "4"
+
     # Disable default servers from architecture chart
     weather:
       enabled: false

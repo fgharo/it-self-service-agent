@@ -74,6 +74,7 @@ REQUEST_MGR_IMG ?= $(REGISTRY)/self-service-agent-request-manager:$(VERSION)
 AGENT_SERVICE_IMG ?= $(REGISTRY)/self-service-agent-service:$(VERSION)
 INTEGRATION_DISPATCHER_IMG ?= $(REGISTRY)/self-service-agent-integration-dispatcher:$(VERSION)
 MCP_SNOW_IMG ?= $(REGISTRY)/self-service-agent-snow-mcp:$(VERSION)
+MCP_MIGRATION_UTILITIES_IMG ?= $(REGISTRY)/self-service-agent-migration-utilities-mcp:$(VERSION)
 MOCK_EVENTING_IMG ?= $(REGISTRY)/self-service-agent-mock-eventing:$(VERSION)
 MOCK_SERVICENOW_IMG ?= $(REGISTRY)/self-service-agent-mock-servicenow:$(VERSION)
 PROMPTGUARD_IMG ?= $(REGISTRY)/self-service-agent-promptguard:$(VERSION)
@@ -570,6 +571,10 @@ build-integration-dispatcher-image: check-lockfile-integration-dispatcher check-
 build-promptguard-image: check-lockfile-promptguard check-deps-services-template
 	$(call build_template_image,$(PROMPTGUARD_IMG),PromptGuard service image,Containerfile.services-template,promptguard-service,promptguard_service.server,.)
 
+.PHONY: build-mcp-migration-utilities-image
+build-mcp-migration-utilities-image: check-lockfile-mcp-migration-utilities check-deps-mcp-template
+	$(call build_template_image,$(MCP_MIGRATION_UTILITIES_IMG),migration-utilities MCP image,Containerfile.mcp-template,mcp-servers/migration-utilities,migration_utilities.server,.)
+
 .PHONY: build-mcp-snow-image
 build-mcp-snow-image: check-lockfile-mcp-snow check-deps-mcp-template
 	$(call build_template_image,$(MCP_SNOW_IMG),snow MCP image,Containerfile.mcp-template,mcp-servers/snow,snow.server,.)
@@ -601,6 +606,9 @@ push-agent-service-image:
 push-integration-dispatcher-image:
 	$(call push_image,$(INTEGRATION_DISPATCHER_IMG) $(PUSH_EXTRA_AGRS),integration dispatcher image)
 
+.PHONY: push-mcp-migration-utilities-image
+push-mcp-migration-utilities-image:
+	$(call push_image,$(MCP_MIGRATION_UTILITIES_IMG) $(PUSH_EXTRA_AGRS),migration-utilities MCP image)
 
 .PHONY: push-mcp-snow-image
 push-mcp-snow-image:
@@ -1079,6 +1087,9 @@ check-lockfile-request-manager:
 
 check-lockfile-integration-dispatcher:
 	$(call check_lockfile,integration-dispatcher)
+
+check-lockfile-mcp-migration-utilities:
+	$(call check_lockfile,mcp-servers/migration-utilities)
 
 check-lockfile-mcp-snow:
 	$(call check_lockfile,mcp-servers/snow)
